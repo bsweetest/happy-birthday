@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Happy Birthday</title>
+<style>
+    * { margin: 0; padding: 0; box-sizing: border-box; font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; }
+  body { background: #FFF0F5; color: #333; display: flex; justify-content: center; align-items: center; min-height: 100vh; padding: 16px; }
+.container { width: 100%; max-width: 380px; text-align: center; }
+.countdown { font-size: 120px; font-weight: 700; color: #F43F5E; margin: 60px 0; animation: pop 0.5s ease; }
+.loading { color: #999; font-size: 14px; letter-spacing: 1px; }
+.dots span { display: inline-block; width: 6px; height: 6px; background: #D1D5DB; border-radius: 50%; margin: 0 3px; animation: blink 1.4s infinite; }
+.dots span:nth-child(2){ animation-delay: 0.2s }
+.dots span:nth-child(3){ animation-delay: 0.4s }
+  @keyframes blink { 0%,80%,100%{opacity:0} 40%{opacity:1} }
+  @keyframes pop { 0%{transform:scale(0.5);opacity:0} 100%{transform:scale(1);opacity:1} }
+
+.card { background: white; border-radius: 20px; padding: 24px 20px; box-shadow: 0 8px 30px rgba(0,0,0,0.06); position: relative; overflow: hidden; width: 100%; margin: 0 auto; display: flex; flex-direction: column; justify-content: center; align-items: center; aspect-ratio: 3/4; }
+.card-auto { aspect-ratio: auto; padding: 20px; }
+
+/* KUE 3 LAPIS TEBAL SAMA, LEBAR BEDA */
+.cake { width: 160px; height: 78px; margin: 15px auto; position: relative; }
+.layer { position: absolute; left: 50%; transform: translateX(-50%); border-radius: 12px; height: 22px; } /* TEBAL SAMA 22px */
+.layer1 { width: 160px; background: #FECACA; bottom: 0; box-shadow: 0 4px 0 #FCA5A5; } /* BAWAH PALING LEBAR */
+.layer2 { width: 130px; background: #BFDBFE; bottom: 22px; box-shadow: 0 4px 0 #93C5FD; } /* TENGAH SEDANG */
+.layer3 { width: 100px; background: #FDE68A; bottom: 44px; box-shadow: 0 4px 0 #FCD34D; } /* ATAS PALING KECIL */
+.dot { position: absolute; width: 7px; height: 7px; border-radius: 50%; }
+.candle-wrap { position: absolute; bottom: 62px; left: 50%; transform: translateX(-50%); display: flex; gap: 14px; }
+.candle { width: 11px; height: 22px; background: #60A5FA; border-radius: 6px; position: relative; }
+.flame { width: 15px; height: 18px; background: radial-gradient(ellipse at center top, #FDE047 0%, #F97316 100%); border-radius: 50% 50% 45% 45% / 60% 60% 40% 40%; position: absolute; top: -14px; left: -2px; animation: flicker 1.6s infinite ease-in-out; cursor: pointer; filter: drop-shadow(0 0 4px #FBBF24); }
+  @keyframes flicker { 0%,100%{transform:scale(1) rotate(-1deg)} 50%{transform:scale(1.02) rotate(1deg)} }
+
+.page1-bg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; opacity: 0.08; }
+.heart { position: absolute; color: #EC4899; font-size: 20px; animation: float 3s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform: translateY(0)} 50%{transform: translateY(-10px)} }
+
+.cursor { display: inline-block; width: 2px; height: 1em; background: #A855F7; animation: blink-cursor 0.8s infinite; margin-left: 2px; }
+@keyframes blink-cursor { 0%,50%{opacity:1} 51%,100%{opacity:0} }
+
+.btns { display: flex; justify-content: center; gap: 14px; margin-top: 12px; }
+.btn { width: 40px; height: 40px; border-radius: 50%; background: #C084FC; color: white; border: none; font-size: 18px; cursor: pointer; }
+.confetti { position: fixed; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 999; }
+.confetti-piece { position: absolute; width: 8px; height: 8px; opacity: 0; animation: fall 2.5s linear forwards; }
+  @keyframes fall { to { transform: translateY(100vh) rotate(720deg); opacity: 1; } }
+.hidden { display: none!important; }
+.handwritten { font-family: 'Comic Sans MS', cursive; font-size: 20px; line-height: 1.8; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <div id="screen1">
+    <div class="countdown" id="count">3</div>
+    <div class="loading">just a moment</div>
+    <div class="dots"><span></span><span></span><span></span></div>
+  </div>
+
+  <!-- SCREEN 2 CAKE: 3:4 -->
+  <div id="screen2" class="hidden">
+    <div class="card">
+      <div style="color:#F43F5E; font-weight:700; font-size:17px;">Make a Wish! 🎂</div>
+      <div class="cake">
+        <div class="layer layer1"></div>
+        <div class="layer layer2"></div>
+        <div class="layer layer3"></div>
+        <div class="dot" style="background:#FBBF24; bottom: 52px; left: 25px;"></div>
+        <div class="dot" style="background:#F472B6; bottom: 35px; left: 70px;"></div>
+        <div class="dot" style="background:#10B981; bottom: 56px; left: 120px;"></div>
+        <div class="candle-wrap">
+          <div class="candle"><div class="flame" id="flame1"></div></div>
+          <div class="candle"><div class="flame" id="flame2"></div></div>
+        </div>
+      </div>
+      <div style="font-size:12px; color:#666;">Tap apinya untuk meniup lilin! 🕯️</div>
+    </div>
+  </div>
+
+  <!-- SCREEN 3 PAGES -->
+  <div id="screen3" class="hidden">
+    <div class="card" id="pageCard">
+      <div class="page1-bg" id="hearts-bg"></div>
+      <div id="pageContent" style="width:100%;"></div>
+      <div style="font-size:12px; color:#999; margin-top:8px;" id="pageNum"></div>
+      <div class="btns">
+        <button class="btn" onclick="prevPage()"><</button>
+        <button class="btn" onclick="nextPage()">></button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="confetti" id="confetti"></div>
+
+<audio id="bgmusic" loop><source src="birthday song.mp3" type="audio/mpeg"></audio>
+
+<script>
+let page = 0;
+let typingInterval = null;
+const music = document.getElementById('bgmusic');
+const pageCard = document.getElementById('pageCard');
+
+document.body.addEventListener('click', () => { if(music.paused) music.play().catch(()=>{}); }, {once: true});
+
+let count = 3;
+const countEl = document.getElementById('count');
+const interval = setInterval(() => {
+  count--;
+  if(count > 0) {
+    countEl.textContent = count;
+    countEl.style.animation = 'none'; void countEl.offsetWidth;
+    countEl.style.animation = 'pop 0.5s ease';
+  } else {
+    clearInterval(interval); showConfetti();
+    setTimeout(() => {
+      document.getElementById('screen1').classList.add('hidden');
+      document.getElementById('screen2').classList.remove('hidden');
+    }, 800);
+  }
+}, 1000);
+
+function blowCandles() {
+  document.getElementById('flame1').style.display = 'none';
+  document.getElementById('flame2').style.display = 'none';
+  showConfetti();
+  setTimeout(() => {
+    document.getElementById('screen2').classList.add('hidden');
+    document.getElementById('screen3').classList.remove('hidden');
+    createHearts(); renderPage();
+  }, 800);
+}
+document.getElementById('flame1').addEventListener('click', blowCandles);
+document.getElementById('flame2').addEventListener('click', blowCandles);
+
+function createHearts(){
+  const bg = document.getElementById('hearts-bg'); bg.innerHTML = '';
+  for(let i=0; i<12; i++){
+    const heart = document.createElement('div');
+    heart.className = 'heart'; heart.innerHTML = '💗';
+    heart.style.left = Math.random()*100 + '%';
+    heart.style.top = Math.random()*100 + '%';
+    heart.style.animationDelay = Math.random()*2 + 's';
+    bg.appendChild(heart);
+  }
+}
+
+const textPage2 = `happy birthday to a genuinely good person.\n\nyou inspire me in so many quiet ways — through how you care, how you stay real, and how you choose kindness even on hard days. i hope life keeps treating you as gently as you treat others. i hope you get to laugh a lot this year, feel proud of how far you’ve come, and collect so many beautiful little memories.\n\nkeep being the person who makes the world feel a little softer. keep smiling, keep growing, and never lose that heart of yours. i’m really grateful you exist, kael. be happy always.`;
+
+const pages = [
+  `<div style="font-size:18px; font-weight:600; line-height:1.6;">to the person who got the "best person" stamp from me last year.</div>`,
+  `typing`,
+  `<div class="handwritten"><div style="color:orange; font-size:22px;">☀️</div><span style="color:#8B5CF6;">always rooting</span><br><span style="color:#EC4899;">for you</span><br><span style="color:#10B981;">from afar</span><br></div>`
+];
+
+function typeWriter(element, text, speed = 24){
+  clearInterval(typingInterval); element.innerHTML = ''; let i = 0;
+  typingInterval = setInterval(() => {
+    if(i < text.length){
+      element.innerHTML = text.substring(0, i+1).replace(/\n/g, '<br>') + '<span class="cursor"></span>';
+      i++;
+    } else {
+      clearInterval(typingInterval);
+      element.innerHTML = text.replace(/\n/g, '<br>');
+    }
+  }, speed);
+}
+
+function renderPage(){
+  clearInterval(typingInterval);
+  document.getElementById('pageNum').textContent = `Page ${page+1} of ${pages.length}`;
+
+  if(page === 1){
+    pageCard.classList.add('card-auto');
+    document.getElementById('pageContent').innerHTML = `<img src="weverse_20260803164103.jpg" style="width:100%; border-radius:14px; margin-bottom:10px;"><div id="typing-text" style="text-align:left; font-size:14px; line-height:1.7;"></div>`;
+    setTimeout(() => { typeWriter(document.getElementById('typing-text'), textPage2, 22); }, 100);
+  } else {
+    pageCard.classList.remove('card-auto');
+    document.getElementById('pageContent').innerHTML = pages[page];
+  }
+  if(page === 0) createHearts();
+}
+
+function nextPage(){ if(page < pages.length-1){ page++; renderPage(); } }
+function prevPage(){ if(page > 0){ page--; renderPage(); } }
+
+function showConfetti(){
+  const confetti = document.getElementById('confetti'); confetti.innerHTML = '';
+  for(let i=0; i<60; i++){
+    const piece = document.createElement('div');
+    piece.className = 'confetti-piece';
+    piece.style.left = Math.random()*100 + '%';
+    piece.style.top = '-10px';
+    piece.style.background = ['#BFDBFE','#FECACA','#FDE68A','#C084FC'][Math.floor(Math.random()*4)];
+    piece.style.animationDelay = Math.random()*0.3 + 's';
+    confetti.appendChild(piece);
+  }
+}
+</script>
+</body>
+</html>
